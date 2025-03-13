@@ -1,0 +1,58 @@
+.timer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.timer__numbers {
+  display: flex;
+  align-items: center;
+  font-size: 2rem;
+}
+
+.timer__text:not(.cart-drawer *) {
+  font-size: 1.2rem;
+  line-height: 1.3;
+}
+
+.timer__minimalist .timer__number:not(:last-child) {
+  position: relative;
+  padding-right: 1.2rem;
+}
+
+.timer__minimalist .timer__number:not(:last-child)::after {
+  position: absolute;
+  right: 0.3rem;
+  content: ':';
+  line-height: 1;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.timer__full .timer__numbers {
+  gap: 0.5rem;
+}
+
+.timer__full .timer__number {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0.8rem;
+  gap: 0.4rem;
+  background: rgb(var(--color-background-secondary));
+  border-radius: var(--content-container-radius);
+  border: var(--content-container-border);
+  box-shadow: var(--content-container-shadow);
+}
+
+.timer__full .timer__number span {
+  display: block;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.timer__full .timer__meta {
+  font-size: 1rem;
+}

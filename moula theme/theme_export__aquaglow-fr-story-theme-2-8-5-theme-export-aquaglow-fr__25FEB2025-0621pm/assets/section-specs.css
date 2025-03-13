@@ -1,0 +1,119 @@
+.specs .heading__section {
+  margin-bottom: 3rem;
+}
+
+.specs__wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto 1fr;
+  column-gap: var(--grid-mobile-horizontal-spacing);
+  row-gap: var(--grid-mobile-vertical-spacing);
+}
+
+.specs__media {
+  grid-area: 1 / 1 / 3 / 3;
+}
+
+.specs__item.specs__item--1 {
+  grid-area: 3 / 1 / 4 / 2;
+}
+
+.specs__item.specs__item--2 {
+  grid-area: 3 / 2 / 4 / 3;
+}
+
+.specs__item.specs__item--3 {
+  grid-area: 4 / 1 / 5 / 2;
+}
+
+.specs__item.specs__item--4 {
+  grid-area: 4 / 2 / 5 / 3;
+}
+
+.specs__item {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  position: relative;
+}
+
+.specs__item .specs__arrow {
+  display: none;
+}
+
+.specs__item--header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.specs__item svg {
+  fill: rgb(var(--color-accent-1));
+}
+
+@media only screen and (min-width: 750px) {
+  .specs__wrapper {
+    grid-template-columns: 1fr 1.2fr 1fr;
+    grid-template-rows: repeat(2, 1fr);
+    column-gap: var(--grid-desktop-horizontal-spacing);
+    row-gap: var(--grid-desktop-vertical-spacing);
+  }
+  
+  .specs__media {
+    grid-area: 1 / 2 / 5 / 3;
+  }
+  
+  .specs__item.specs__item--1 {
+    grid-area: 1 / 1 / 2 / 2;
+  }
+  
+  .specs__item.specs__item--2 {
+    grid-area: 4 / 3 / 5 / 4;
+  }
+  
+  .specs__item.specs__item--3 {
+    grid-area: 1 / 3 / 2 / 4;
+  }
+  
+  .specs__item.specs__item--4 {
+    grid-area: 4 / 1 / 5 / 2;
+  }
+
+  .specs__item .specs__arrow {
+    position: absolute;
+    display: block;
+    width: 5rem;
+    height: 5rem;
+  }
+  
+  .specs__item .specs__arrow svg {
+    width: 100%;
+    height: auto;
+  }
+  
+  .specs__item.specs__item--1 .specs__arrow {
+    top: 110%;
+    right: 0;
+    transform: scaleY(-1);
+  }
+  
+  .specs__item.specs__item--2 .specs__arrow {
+    top: -50%;
+    transform: scaleX(-1);
+  }
+  
+  .specs__item.specs__item--3 .specs__arrow {
+    top: 110%;
+    transform: scale(-1);
+  }
+  
+  .specs__item.specs__item--4 .specs__arrow {
+    top: -50%;
+    right: 0;
+  }
+  
+  .specs__arrow--straight svg,
+  .specs__arrow--draw svg {
+    transform: rotate(-45deg);
+  }
+}

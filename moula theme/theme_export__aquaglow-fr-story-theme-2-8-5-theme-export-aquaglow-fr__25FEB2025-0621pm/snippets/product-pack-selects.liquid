@@ -1,0 +1,51 @@
+{%- if product.variants.size > 1 -%}
+  {% for option in product.options_with_values %}
+    {%- if style == "tight" -%}
+      {% if forloop.first %}
+        {%- assign options_name = option.name -%}
+      {% else %}
+        {%- assign options_name = options_name | append: " & " | append: option.name -%}
+      {% endif %}
+    {%- endif -%}
+
+    {%- if style == "classic" -%}
+      {%- assign variants_number = variants_number | plus: 1 -%}
+    {%- endif -%}
+  {% endfor %}
+  
+  {% for i in (1..quantity) %}
+    <div class="pack__select--container">
+      {%- if style == "tight" -%}
+        <label>{{- options_name }} #{{ i -}}</label>
+        {% for option in product.options_with_values %}
+          <div class="pack__select--item select">
+            <select
+              class="pack__select select__select"
+              name="{{ options_name | handleize }}-{{ i }}"
+            >
+              {% for value in option.values %}
+                <option value="{{ value }}">{{ value }}</option>
+              {% endfor %}
+            </select>
+            {% render 'icon-caret' %}
+          </div>
+        {% endfor %}
+      {%- else -%}
+        {% for option in product.options_with_values %}
+          <div class="pack__select--item{% if style == "classic" %} pack__select--item-{{ variants_number }}{% endif %} select">
+            <label>{{- option.name }} {{ i -}}</label>
+            <select
+              class="pack__select select__select"
+              name="{{ option.name | handleize }}-{{ i }}"
+            >
+              {% for value in option.values %}
+                <option value="{{ value }}">{{ value }}</option>
+              {% endfor %}
+            </select>
+            {% render 'icon-caret' %}
+          </div>
+        {% endfor %}
+      {%- endif -%}
+    </div>
+  {% endfor %}
+{%- endif -%}

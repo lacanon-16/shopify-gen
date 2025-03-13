@@ -1,0 +1,60 @@
+{
+    "name": "t:sections.footer.name",
+    "type": "footer",
+    "sections": {
+        "footer": {
+            "type": "footer",
+            "blocks": {
+                "86bc1fa1-7fbc-40a4-a5f1-6db385eaf7f5": {
+                    "type": "image",
+                    "settings": {
+                        "image_width": 245,
+                        "alignment": "left",
+                        "text_footer": "<p><strong>AquaGlow<\/strong> - Créateur d’ambiance lumineuse apaisante. Découvrez notre lampe unique pour transformer votre espace en un lieu de détente et de bien-être.<\/p>"
+                    }
+                },
+                "4b56a407-ff69-4929-8842-bac519d7b845": {
+                    "type": "link_list",
+                    "settings": {
+                        "heading": "AquaGlow",
+                        "menu": "main-menu"
+                    }
+                }
+            },
+            "block_order": [
+                "86bc1fa1-7fbc-40a4-a5f1-6db385eaf7f5",
+                "4b56a407-ff69-4929-8842-bac519d7b845"
+            ],
+            "settings": {
+                "center": false,
+                "footer_bottom": true,
+                "border_bottom": "1",
+                "footer_accordion_menu": true,
+                "footer_copyright": true,
+                "footer_policy": true,
+                "footer_bottom_socials": false,
+                "payment_enable": true,
+                "enable_animations": false,
+                "animation": "fade-up",
+                "layout_width": "normal",
+                "padding_top": 36,
+                "padding_bottom": 36,
+                "padding_top_sm": 28,
+                "padding_bottom_sm": 28,
+                "color_palette": "inverse",
+                "enable_cut_bg_color": false,
+                "cut_bg_color": "#f6f6f6",
+                "cut_bg_color_vertical": 0,
+                "cut_bg_color_vertical_mobile": 0,
+                "cut_bg_color_horizontal": 0,
+                "cut_bg_color_horizontal_mobile": 0,
+                "separator_top": "none",
+                "separator_animated": false,
+                "separator_bg_color": ""
+            }
+        }
+    },
+    "order": [
+        "footer"
+    ]
+}

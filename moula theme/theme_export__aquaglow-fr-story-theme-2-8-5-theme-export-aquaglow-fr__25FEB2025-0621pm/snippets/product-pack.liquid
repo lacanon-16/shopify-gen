@@ -1,0 +1,181 @@
+{{ 'component-product-pack.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'product-pack.js' | asset_url }}" defer="defer"></script>
+
+{% style %}
+  variant-radios {
+    display: none;
+  }
+
+  :root,
+  .product-pack {
+    --pack-color-selected: {{ block.settings.color_selected.red }}, {{ block.settings.color_selected.green }}, {{ block.settings.color_selected.blue }};
+    --pack-color-selected-background: {{ block.settings.color_selected_background }};
+    --pack-color-background: {{ block.settings.color_background }};
+    --pack-color-background-dark: {{ block.settings.color_background | color_darken: 10 }};
+    --pack-color-title: {{ block.settings.color_title }};
+    --pack-color-price: {{ block.settings.color_price }};
+    --pack-color-discount-price: {{ block.settings.color_discount_price }};
+    --pack-color-texts: {{ block.settings.color_texts }};
+    --pack-color-variants-title: {{ block.settings.color_variants_title }};    
+    --pack-color-disclaimer: {{ block.settings.color_disclaimer.red }}, {{ block.settings.color_disclaimer.green }}, {{ block.settings.color_disclaimer.blue }};
+    --pack-color-disclaimer-fade: {{ block.settings.color_disclaimer | color_lighten: 50 }};
+  } 
+{% endstyle %}
+
+{%- assign style = block.settings.pack_style -%}
+
+{% if block.settings.quantity1 != 0 or block.settings.quantity2 != 0 %}
+  <product-pack
+    class="pack__style--{{ style }}"
+    data-style="{{ block.settings.pack_style }}"
+    data-section-id="{{ section.id }}"
+    data-product-id="{{ product.selected_or_first_available_variant.id }}"
+  >
+    {% if block.settings.label != blank %}
+      <label class="form__label{% if block.settings.add_lines %} form__label--lines{% endif %}">
+        {{ block.settings.label }}
+      </label>
+    {% endif %}
+
+    <div class="pack__wrapper">
+      {% for i in (0..2) %}
+        {% capture quantity_key %}quantity{{ i }}{% endcapture %}
+        {% capture image_key %}image{{ i }}{% endcapture %}
+        {% capture price_key %}price{{ i }}{% endcapture %}
+        {% capture price_before_key %}price_before{{ i }}{% endcapture %}
+        {% capture title_key %}title{{ i }}{% endcapture %}
+        {% capture disclaimer_key %}disclaimer{{ i }}{% endcapture %}
+        {% capture additional_text_key %}additional_text{{ i }}{% endcapture %}
+      
+        {% assign quantity = block.settings[quantity_key] %}
+        {% assign image = block.settings[image_key] %}
+        {% assign price = block.settings[price_key] %}
+        {% assign price_before = block.settings[price_before_key] %}
+        {% assign title = block.settings[title_key] %}
+        {% assign disclaimer = block.settings[disclaimer_key] %}
+        {% assign additional_text = block.settings[additional_text_key] %}
+      
+        {% if quantity != 0 %}
+          <component-pack
+            class="pack{% if image != blank %} pack__with-image{% endif %} pack-accordion__shadow--{{ block.settings.pack_accordions_shadow }} pack-accordion__border--{{ block.settings.pack_accordions_border }}{% if i == 0 %} pack__selected{% endif %}"
+            data-quantity="{{ quantity }}"
+            data-regular-price="{{ price }}"
+            data-compare-price="{{ price_before }}"
+            {% if block.settings.pack_style == "stack" %}data-stack="pack__stack--{{ i }}"{% endif %}
+          >
+            {%- if image != blank -%}
+              {{ image | image_url: width: 200 | image_tag: loading: 'lazy', class: 'pack__image' }}
+            {%- endif -%}
+      
+            <div class="pack__infos">
+              {%- render "product-pack-item",
+                 style: style,
+                 title: title,
+                 disclaimer: disclaimer,
+                 price_color: block.settings.pack_price_color,
+                 text_color: block.settings.pack_text_color,
+                 price: price,
+                 price_before: price_before,
+                 text: additional_text,
+              -%}
+
+              {%- if block.settings.pack_style != "stack" -%}
+                {%- render "product-pack-selects",
+                   style: style,
+                   product: product,
+                   quantity: quantity
+                -%}
+              {%- endif -%}
+            </div>
+          </component-pack>
+        {% endif %}
+      {% endfor %}
+      
+      {%- if block.settings.pack_style == "stack" -%}
+        {% for i in (0..2) %}
+          {% capture quantity_key %}quantity{{ i }}{% endcapture %}
+          {% assign quantity = block.settings[quantity_key] %}
+        
+          {% if quantity != 0 %}
+            <div class="pack__stack--selects pack__stack--{{ i }}{% if i == 0 %} stack-active{% endif %}">
+              {%- render "product-pack-selects",
+                 product: product,
+                 style: style,
+                 quantity: quantity
+              -%}
+            </div>
+          {% endif %}
+        {% endfor %}
+      {%- endif -%}
+    </div>
+
+    {% if settings.enable_wishlist %} 
+      {%- assign class = "form product-form__button--atc--with-wishlist" -%}
+    {% else %}
+      {%- assign class = "form" -%}
+    {% endif %}
+    {%- form 'product',
+      product,
+      id: 'product-pack-form',
+      class: class,
+      novalidate: 'novalidate',
+      data-type: 'add-to-cart-form'
+    -%}
+      <button
+        type="submit"
+        name="add"
+        id="product-pack-submit"
+        class="product-form__submit button button__style--{{ block.settings.button_style }}"
+        {% if product.selected_or_first_available_variant.available == false %}
+          disabled
+        {% endif %}
+      >
+        <span class="buy-buttons__text-flex addbtntext">
+          {%- unless block.settings.icon == "none" -%}
+            {%- render "icons-atc-buttons", icon: block.settings.icon -%}
+          {%- endunless -%}
+          {%- if product.selected_or_first_available_variant.available == false or quantity_rule_soldout -%}
+            {{ 'products.product.sold_out' | t }}
+          {%- else -%}
+            {{- block.settings.button_text -}}
+          {%- endif -%}
+        </span>
+        <div class="loading-overlay__spinner hidden">
+          <svg
+            aria-hidden="true"
+            focusable="false"
+            role="presentation"
+            class="spinner"
+            viewBox="0 0 66 66"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
+          </svg>
+        </div>
+      </button>
+
+      {%- if settings.enable_wishlist -%}
+        {%- render 'button-wishlist', product: product -%}
+      {%- endif -%}
+      
+    {%- endform -%}
+    {%- liquid
+      if block.settings.extra_button
+        render 'extra-button', unique: section.id
+      endif
+    -%}
+
+    <template id="product-pack-variants">
+      {%- for _variant in product.variants -%}
+        <option
+          value="{{ _variant.id }}"
+          data-option="{{ _variant.title }}"
+          data-id="{{ _variant.id }}"
+          data-available="{{ _variant.available }}"
+        >
+          {{ _variant.title }}
+        </option>
+      {%- endfor -%}
+    </template>
+  </product-pack>
+{% endif %}

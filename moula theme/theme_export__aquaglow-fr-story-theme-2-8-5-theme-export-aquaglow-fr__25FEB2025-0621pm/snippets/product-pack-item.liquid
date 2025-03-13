@@ -1,0 +1,31 @@
+<div class="pack__header">
+  <div class="pack__texts">
+    <p class="pack__title">
+      {{ title }}
+      {% if disclaimer != blank %}
+        <span class="pack__disclaimer">{{ disclaimer }}</span>
+      {% endif %}
+    </p>
+    {%- if style == 'classic' -%}
+      <div class="pack__numbers">
+        <p class="pack__price price__color--{{ price_color }}">{{ price }}</p>
+        {% if price_before %}
+          <p class="pack__price-before">{{ price_before }}</p>
+        {% endif %}
+      </div>
+    {%- endif -%}
+    {% if text %}
+      <p class="price__additional-text price__color--{{ text_color }}">
+        {{ text }}
+      </p>
+    {% endif %}
+  </div>
+  {%- if style != 'classic' -%}
+    <div class="pack__numbers">
+      <p class="pack__price price__color--{{ price_color }}">{{ price }}</p>
+      {% if price_before %}
+        <p class="pack__price-before">{{ price_before }}</p>
+      {% endif %}
+    </div>
+  {%- endif -%}
+</div>

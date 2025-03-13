@@ -1,0 +1,195 @@
+.ugc__swiper {
+  margin-top: 3rem;
+  overflow: visible;
+}
+
+.ugc__wrapper {
+  overflow: hidden;
+  padding: 0 3rem 2rem;
+  position: relative;
+}
+
+.ugc__controls {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.8);
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ugc__button {
+  border-radius: 10px;
+  overflow: hidden;
+  border: none;
+  cursor: pointer;
+  outline: none;
+  width: 99.5%;
+  height: 380px;
+  position: relative;
+  transition: 0.25s ease all;
+  display: block;
+}
+
+.popup-video__opener {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.popup-video__opener iframe {
+  position: absolute;
+  border: none;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ugc__button .popup-video__opener video {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ugc__controls .icon {
+  transition: 0.25s ease all;
+  position: absolute;
+  width: 25px;
+  height: auto;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.ugc__controls .icon-resize,
+.ugc__button:hover .icon-play {
+  visibility: hidden;
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.5);
+}
+
+.ugc__button:hover .icon-resize {
+  visibility: visible;
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.ugc__button::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));
+  z-index: 10;
+}
+
+.ugc__button:hover {
+  transform: scale(1.05);
+}
+
+.ugc__popup {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity var(--transitions-delay) ease, visibility var(--transitions-delay) ease;
+  position: fixed;
+  background-color: rgba(var(--color-background), .6);
+  backdrop-filter: blur(1rem);
+  -webkit-backdrop-filter: blur(1rem);
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 999999;
+}
+
+.popup-video__closer {
+  position: absolute;
+  top: -5rem;
+  right: 1rem;
+  cursor: pointer;
+}
+
+.popup-video__closer svg {
+  display: block;
+  width: 3rem;
+  height: 3rem;
+}
+
+.ugc__video-wrapper {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 50rem;
+  max-width: 90%;
+  max-height: 70%;
+}
+
+.ugc__video-wrapper--vertical {
+  width: 28rem;
+}
+
+.ugc__video-container {
+  position: relative;
+}
+
+.ugc__popup iframe,
+.ugc__popup video {
+  position: absolute;
+  outline: none;
+  border: var(--media-container-border);
+  border-radius: var(--media-container-radius);
+  width: 100%;
+  height: 100%;
+  background: rgb(var(--color-foreground));
+  object-fit: cover;
+}
+
+@media only screen and (min-width: 750px) {
+  .popup-video__closer {
+    right: -5rem;
+  }
+
+  .popup-video__closer svg {
+    width: 4rem;
+    height: 4rem;
+  }
+}
+
+.ugc__button .popup-video__opener svg.icon-play {
+  position: absolute;
+  z-index: 1;
+  background: transparent;
+  height: 2.2rem;
+  width: 2.2rem;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: rgb(var(--color-foreground));
+}
+
+.ugc__name {
+  position: absolute;
+  z-index: 11;
+  font-weight: bolder;
+  font-size: 2rem;
+  color: rgb(var(--color-background));
+  bottom: 10px;
+  left: 10px;
+  text-align: left;
+}

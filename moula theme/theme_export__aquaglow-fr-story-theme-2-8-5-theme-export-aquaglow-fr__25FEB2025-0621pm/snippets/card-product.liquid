@@ -1,0 +1,252 @@
+{% comment %}
+  Renders a product card
+
+  Accepts:
+  - card_style: {String} Card style
+  - card_product: {Object} Product Liquid object (optional)
+  - media_aspect_ratio: {String} Size of the product image card. Values are "square" and "portrait". Default is "square" (optional)
+  - show_secondary_image: {Boolean} Show the secondary image on hover. Default: false (optional)
+  - show_vendor: {Boolean} Show the product vendor. Default: false
+  - show_rating: {Boolean} Show the product rating. Default: false
+  - lazy_load: {Boolean} Image should be lazy loaded. Default: true (optional)
+
+  Usage:
+  {% render 'card-product', show_vendor: section.settings.show_vendor %}
+{% endcomment %}
+
+{%- if card_product and card_product != empty -%}
+  {%- liquid
+    assign ratio = 1
+    if card_product.featured_media and media_aspect_ratio == 'portrait'
+      assign ratio = 0.8
+    elsif card_product.featured_media and media_aspect_ratio == 'adapt'
+      assign ratio = card_product.featured_media.aspect_ratio
+    endif
+    if ratio == 0 or ratio == null
+      assign ratio = 1
+    endif
+
+    if card_style == blank
+      assign card_style = settings.product_card_style
+    endif
+
+    assign amount = card_product.price | money_without_trailing_zeros
+    assign savings_amount = card_product.compare_at_price | minus: card_product.price | money_without_trailing_zeros
+    assign new_amount_in_percentage = card_product.price | times: 100 | divided_by: card_product.compare_at_price
+    assign savings_percentage = 100 | minus: new_amount_in_percentage | append: '%'
+  -%}
+
+  <div
+    class="
+      card card--product card--product-aspect-ratio--{{ media_aspect_ratio }} card__style--{{ card_style }} card__alignment--{{ settings.product_card_text_alignment }}
+      {% if settings.product_card_hover_line %}card--product-hover-line{% endif %}
+      {% if settings.product_card_hover_zoom %}card--product-hover-zoom{% endif %}
+    "
+  >
+    {%- if card_product.featured_media -%}
+      <a href="{{ card_product.url }}" class="card__product-link--media">
+        {%- unless settings.product_card_sale_tag_text == blank -%}
+          {%- if card_product.compare_at_price > card_product.price and card_product.available -%}
+            <div
+              class="
+                card__product-badges card__product-badges-position--{{ settings.product_card_sale_tag_position }}
+                card__product-badges-style--{{ settings.product_card_sale_tag_style }}
+              "
+            >
+              <span class="badge sale">
+                {{-
+                  settings.product_card_sale_tag_text
+                  | replace: '[amount]', savings_amount
+                  | replace: '[percent]', savings_percentage
+                -}}
+              </span>
+            </div>
+          {%- endif -%}
+        {%- endunless -%}
+
+        <div
+          class="
+            card__media{% if card_style == "standard" %} global-media-settings{% endif %} media media--image
+            {%- if card_product.media[1] != null and show_secondary_image %} card__media--secondary-image{% endif %}
+          "
+          style="padding-bottom: {{ 1 | divided_by: ratio | times: 100 }}%;"
+          id="cardImage{{ card_product.id }}"
+        >
+          {% comment %}theme-check-disable ImgLazyLoading{% endcomment %}
+          {%- capture sizes -%}
+            (min-width: {{ settings.page_width }}px) {{ settings.page_width | minus: 130 | divided_by: 4 }}px,
+            (min-width: 990px) calc((100vw - 130px) / 4),
+            (min-width: 750px) calc((100vw - 120px) / 3),
+            calc((100vw - 35px) / 2)
+          {%- endcapture -%}
+
+          {%- if card_product.featured_media.media_type == 'video' -%}
+            {{ card_product.featured_media.preview_image | image_url: width: 1500 | image_tag: loading: 'lazy', class: 'motion-reduce', sizes: sizes, widths: '533, 720, 940, 1066, 1500' }}
+          {%- else -%}
+            {{ card_product.featured_media | image_url: width: 1500 | image_tag: loading: 'lazy', class: 'motion-reduce', sizes: sizes, widths: '533, 720, 940, 1066, 1500' }}
+          {%- endif -%}
+          
+          {%- if card_product.media[1] != null and show_secondary_image -%}
+            {{ card_product.media[1] | image_url: width: 1500 | image_tag: loading: 'lazy', class: 'motion-reduce', sizes: sizes, widths: '533, 720, 940, 1066, 1500' }}
+          {%- endif -%}
+          {% comment %}theme-check-enable ImgLazyLoading{% endcomment %}
+        </div>
+      </a>
+    {%- endif -%}
+    <div class="card__content">
+      <div class="card__content-header{% if settings.enable_wishlist %} card__content-header_with-wishlist{% endif %}">
+        <div class="card__product-informations{% if settings.product_card_display_price %} with_price{% if settings.product_card_show_price_besides %} with_price--besides{% endif %}{% endif %}">
+          <a href="{{ card_product.url }}" class="card__product-link--heading">
+            <h3 class="card__product-heading{% if settings.product_card_limit_2_lines %} heading--2-lines{% endif %}">
+              {{ card_product.title }}
+            </h3>
+            {%- if show_vendor -%}
+              <span class="visually-hidden">{{ 'accessibility.vendor' | t }}</span>
+              <div class="card__product-vendor">{{ card_product.vendor }}</div>
+            {%- endif -%}
+          </a>
+          {%- if settings.product_card_display_price -%}
+            {%- assign priceClass = "cardPrice" | append: card_product.id -%}
+            {% render 'price',
+              product: card_product,
+              use_variant: true,
+              price_class: priceClass,
+              formatting: formatting,
+              price_color: settings.card_product_price_color
+            %}
+          {%- endif -%}
+        </div>
+
+        {%- if settings.enable_wishlist -%}
+          {%- render 'button-wishlist', product: card_product -%}
+        {%- endif -%}
+      </div>
+
+      {%- if show_rating and card_product.metafields.reviews.rating.value != blank -%}
+        {% liquid
+          assign rating_decimal = 0
+          assign decimal = card_product.metafields.reviews.rating.value.rating | modulo: 1
+          if decimal >= 0.3 and decimal <= 0.7
+            assign rating_decimal = 0.5
+          elsif decimal > 0.7
+            assign rating_decimal = 1
+          endif
+        %}
+        <div
+          class="card__product-rating"
+          role="img"
+          aria-label="{{ 'accessibility.star_reviews_info' | t: rating_value: card_product.metafields.reviews.rating.value, rating_max: card_product.metafields.reviews.rating.value.scale_max }}"
+        >
+          <span
+            aria-hidden="true"
+            class="rating-star color-icon-{{ settings.accent_icons }}"
+            style="--rating: {{ card_product.metafields.reviews.rating.value.rating | floor }}; --rating-max: {{ card_product.metafields.reviews.rating.value.scale_max }}; --rating-decimal: {{ rating_decimal }};"
+          ></span>
+        </div>
+        <p class="rating-text caption">
+          <span aria-hidden="true">
+            {{- card_product.metafields.reviews.rating.value }} /
+            {{ card_product.metafields.reviews.rating.value.scale_max -}}
+          </span>
+        </p>
+        <p class="rating-count caption">
+          <span aria-hidden="true">({{ card_product.metafields.reviews.rating_count }})</span>
+          <span class="visually-hidden">
+            {{- card_product.metafields.reviews.rating_count }}
+            {{ 'accessibility.total_reviews' | t -}}
+          </span>
+        </p>
+      {%- endif -%}
+
+      {%- if settings.product_card_enable_button -%}
+        <div class="card__product-cta">
+          {%- if settings.product_card_button_type == 'atc' -%}
+            {%- if card_product.available -%}
+              <script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
+              <product-form class="product-form">
+                <div class="product-form__error-message-wrapper" role="alert" hidden="">
+                  {% render 'icon-error' %}
+                  <span class="product-form__error-message"></span>
+                </div>
+                <form
+                  method="post"
+                  action="/cart/add"
+                  id="product-form-{{ section.id }}"
+                  accept-charset="UTF-8"
+                  class="form card__product-form{% unless card_product.has_only_default_variant %} card__product-form-with_variants {% endunless %}{% if variants_wrap %}flex-wrap{% endif %}"
+                  enctype="multipart/form-data"
+                  novalidate="novalidate"
+                  data-type="add-to-cart-form"
+                  data-editor-form-attribute=""
+                >
+                  <input type="hidden" name="form_type" value="product">
+                  <input type="hidden" name="utf8" value="✓">
+  
+                  {%- unless card_product.has_only_default_variant -%}
+                    <card-variant-selects class="select card__product-form-select" data-product-id="cardVariants{{ card_product.id }}" data-price-class="cardPrice{{ card_product.id }}" data-image-class="cardImage{{ card_product.id }}">
+                      <select class="select__select" name="id">
+                        {%- for variant in card_product.variants -%}
+                          {%- if variant.available -%}
+                            <option value="{{ variant.id }}">
+                              {{ variant.title }}
+                            </option>
+                          {%- endif -%}
+                        {%- endfor -%}
+                      </select>
+                      {% render 'icon-caret' %}
+                    </card-variant-selects>
+                    <script id="cardVariants{{ card_product.id }}" type="application/json">{{ card_product.variants | json }}</script>
+                  {%- else -%}
+                    <input type="hidden" name="id" value="{{ card_product.variants[0].id }}" class="product-variant-id">
+                  {%- endunless -%}
+  
+                  <div class="product-form__buttons card__product-form-buttons">
+                    <button
+                      id="ProductSubmitButton-{{ section.id }}"
+                      type="submit"
+                      name="add"
+                      class="product-form__submit button button__style--{{ settings.product_card_button_style }}"
+                    >
+                      <span>
+                        {{- settings.product_card_button_text | replace: '[amount]', amount | replace: '[percent]', savings_percentage }}
+                      </span>
+                      <div class="loading-overlay__spinner hidden">
+                        <svg
+                          aria-hidden="true"
+                          focusable="false"
+                          class="spinner"
+                          viewBox="0 0 66 66"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
+                        </svg>
+                      </div>
+                    </button>
+                  </div>
+                </form>
+              </product-form>
+            {%- else -%}
+              <p class="button button__style--disabled">{{ 'products.product.sold_out' | t }}</p>
+            {%- endif -%}
+          {%- else -%}
+            <a href="{{ card_product.url }}" class="button button__style--{{ settings.product_card_button_style }}">
+              {{- settings.product_card_button_text | replace: '[amount]', amount | replace: '[percent]', savings_percentage -}}
+            </a>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+{%- else -%}
+  <div class="card card--product card__style--{{ card_style }}">
+    <div class="card__media{% if card_style == "standard" %} global-media-settings{% endif %} placeholder">
+      {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+    </div>
+    <div class="card__content">
+      <div class="card__product-informations">
+        <h3 class="card__product-heading">{{ 'onboarding.product_title' | t }}</h3>
+        {% render 'price' %}
+      </div>
+    </div>
+  </div>
+{%- endif -%}

@@ -1,0 +1,37 @@
+{% style %}
+  .picto-{{ block.id }} {
+    width: {{ block.settings.width_mobile }}px;
+    height: {{ block.settings.width_mobile }}px;
+    top: {{ block.settings.top_mobile }}%;
+    left: {{ block.settings.left_mobile }}%;
+  }
+  
+  .picto-{{ block.id }} img {
+    width: {{ block.settings.width_mobile }}px;
+    height: {{ block.settings.width_mobile }}px;
+    rotate: {{ block.settings.rotate_mobile }}deg;
+  }
+
+  @media screen and (min-width: 768px) {
+    .picto-{{ block.id }} {
+      width: {{ block.settings.width }}px;
+      height: {{ block.settings.width }}px;
+      top: {{ block.settings.top }}%;
+      left: {{ block.settings.left }}%;
+    }
+    
+    .picto-{{ block.id }} img {
+      width: {{ block.settings.width }}px;
+      height: {{ block.settings.width }}px;
+      rotate: {{ block.settings.rotate }}deg;
+    }
+  }
+{% endstyle %}
+
+<div class="picto picto-{{ block.id }}" {% render "animation", enable_animations: section.settings.enable_animations, animation: section.settings.animation %}>
+  {%- if block.settings.image != blank -%}
+    {{ block.settings.image | image_url: width: 300 | image_tag: class: 'picto__image', width: block.settings.width, height: 'auto' }}
+  {%- else -%}
+    {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+  {%- endif -%}
+</div>

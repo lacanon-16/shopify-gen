@@ -1,0 +1,25 @@
+.sliding-gallery {
+  display: flex;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  white-space: nowrap;
+  height: 30rem;
+}
+
+.sliding-gallery img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.gallery-image {
+  flex: 0 0 auto;
+  padding: 10px;
+}
+
+.gallery-image img {
+  width: auto;
+  height: auto;
+  display: block;
+}

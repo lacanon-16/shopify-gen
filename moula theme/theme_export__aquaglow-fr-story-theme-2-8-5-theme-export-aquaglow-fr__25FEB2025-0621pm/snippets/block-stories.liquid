@@ -1,0 +1,93 @@
+{{ 'component-stories.css' | asset_url | stylesheet_tag }}
+
+{% assign sectionId = section.id | remove: '-' %}
+{%- style -%}
+  {%- if block.settings.accent__gradient -%}
+    #stories__{{ sectionId }} .popup-video__opener {
+      background: rgb(var(--color-accent-1));
+    }
+  {%- endif -%}
+{%- endstyle -%}
+
+<div
+  id="stories__{{ sectionId }}"
+  class="swiper swiper_no_pagination stories__swiper"
+  {% render 'swiper-data-editor' %}
+>
+  <div class="swiper-wrapper">
+    {%- if block.settings.video1 != blank -%}
+      <div class="swiper-slide stories__slide" {% render 'animation', enable_animations: enable_animations, animation: animation -%}>
+        <div class="stories__item">
+          <popup-video class="stories__button{% if block.settings.image1 == blank %} stories__button--placeholder{% endif %}">
+            <div class="popup-video__opener" data-popup="1story_{{ block.id }}_{{ section.id }}" data-player="1player_{{ block.id }}_{{ section.id }}">
+              {%- render 'icon-play' -%}
+              {%- if block.settings.image1 != blank -%}
+                {{ block.settings.image1 | image_url: width: 300 | image_tag: loading: 'lazy', class: 'media--image', sizes: "150px", widths: '165, 360, 535, 750, 1070, 1500' }}
+              {%- else -%}
+                {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+              {%- endif -%}
+            </div>
+            <p class="story__name">{{ block.settings.name1 }}</p>
+          </popup-video>
+        </div>
+      </div>
+    {%- endif -%}
+    {%- if block.settings.video2 != blank -%}
+      <div class="swiper-slide stories__slide" {% render 'animation', enable_animations: enable_animations, animation: animation -%}>
+        <div class="stories__item">
+          <popup-video id="2story_{{ sectionId }}_{{ block.id | remove: '-' }}" class="stories__button{% if block.settings.image2 == blank %} stories__button--placeholder{% endif %}" >
+            <div class="popup-video__opener" data-popup="2story_{{ block.id }}_{{ section.id }}" data-player="2player_{{ block.id }}_{{ section.id }}">
+              {%- render 'icon-play' -%}
+              {%- if block.settings.image2 != blank -%}
+                {{ block.settings.image2 | image_url: width: 300 | image_tag: loading: 'lazy', class: 'media--image', sizes: "150px", widths: '165, 360, 535, 750, 1070, 1500' }}
+              {%- else -%}
+                {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+              {%- endif -%}
+            </div>
+            <p class="story__name">{{ block.settings.name2 }}</p>
+          </popup-video>
+        </div>
+      </div>
+    {%- endif -%}
+    {%- if block.settings.video3 != blank -%}
+      <div class="swiper-slide stories__slide" {% render 'animation', enable_animations: enable_animations, animation: animation -%}>
+        <div class="stories__item">
+          <popup-video id="3story_{{ sectionId }}_{{ block.id | remove: '-' }}" class="stories__button{% if block.settings.image3 == blank %} stories__button--placeholder{% endif %}" >
+            <div class="popup-video__opener" data-popup="3story_{{ block.id }}_{{ section.id }}" data-player="3player_{{ block.id }}_{{ section.id }}">
+              {%- render 'icon-play' -%}
+              {%- if block.settings.image3 != blank -%}
+                {{ block.settings.image3 | image_url: width: 300 | image_tag: loading: 'lazy', class: 'media--image', sizes: "150px", widths: '165, 360, 535, 750, 1070, 1500' }}
+              {%- else -%}
+                {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+              {%- endif -%}
+            </div>
+            <p class="story__name">{{ block.settings.name3 }}</p>
+          </popup-video>
+        </div>
+      </div>
+    {%- endif -%}
+    {%- if block.settings.video4 != blank -%}
+      <div class="swiper-slide stories__slide" {% render 'animation', enable_animations: enable_animations, animation: animation -%}>
+        <div class="stories__item">
+          <popup-video id="4story_{{ sectionId }}_{{ block.id | remove: '-' }}" class="stories__button{% if block.settings.image4 == blank %} stories__button--placeholder{% endif %}" >
+            <div class="popup-video__opener" data-popup="4story_{{ block.id }}_{{ section.id }}" data-player="4player_{{ block.id }}_{{ section.id }}">
+              {%- render 'icon-play' -%}
+              {%- if block.settings.image4 != blank -%}
+                {{ block.settings.image4 | image_url: width: 300 | image_tag: loading: 'lazy', class: 'media--image', sizes: "150px", widths: '165, 360, 535, 750, 1070, 1500' }}
+              {%- else -%}
+                {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+              {%- endif -%}
+            </div>
+            <p class="story__name">{{ block.settings.name4 }}</p>
+          </popup-video>
+        </div>
+      </div>
+    {%- endif -%}
+
+    {%- liquid
+      assign swiperEl = "'#stories__" | append: sectionId | append: "'"
+      assign swiperOptions = "mousewheel:{forceToAxis:true},spaceBetween:0,slidesPerView:3.2,breakpoints:{750:{slidesPerView: 4}},"
+      render 'swiper-theme-editor', sectionId: sectionId, swiperVariant: 'stories__', swiperEl: swiperEl, swiperOptions: swiperOptions, pagination: false, navigation: false
+    -%}
+  </div>
+</div>

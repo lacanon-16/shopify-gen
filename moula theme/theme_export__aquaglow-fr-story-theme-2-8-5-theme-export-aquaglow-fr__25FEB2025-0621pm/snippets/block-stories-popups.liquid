@@ -1,0 +1,83 @@
+{%- if block.settings.video1 != blank -%}
+  <div class="story__popup" style="opacity: 0; visibility: hidden;" id="1story_{{ block.id }}_{{ section.id }}">
+    <div class="story__video-wrapper">
+      <span class="popup-video__closer">{%- render 'icon-close' -%}</span>
+      <div class="story__video-container" style="padding-bottom: {{ block.settings.type__video }};">
+        {%- assign player_id = '1player_' | append: block.id | append: '_' | append: section.id -%}
+        {{
+          block.settings.video1
+          | video_tag:
+            id: player_id,
+            class: 'js-custom',
+            image_size: '1100x',
+            autoplay: false,
+            controls: true,
+            muted: false
+        }}
+      </div>
+    </div>
+  </div>
+{%- endif -%}
+
+{%- if block.settings.video2 != blank -%}
+  <div class="story__popup" style="opacity: 0; visibility: hidden;" id="2story_{{ block.id }}_{{ section.id }}">
+    <div class="story__video-wrapper">
+      <span class="popup-video__closer">{%- render 'icon-close' -%}</span>
+      <div class="story__video-container" style="padding-bottom: {{ block.settings.type__video }};">
+        {%- assign player_id = '2player_' | append: block.id | append: '_' | append: section.id -%}
+        {{
+          block.settings.video2
+          | video_tag:
+            id: player_id,
+            class: 'js-custom',
+            image_size: '1100x',
+            autoplay: false,
+            controls: true,
+            muted: false
+        }}
+      </div>
+    </div>
+  </div>
+{%- endif -%}
+
+{%- if block.settings.video3 != blank -%}
+  <div class="story__popup" style="opacity: 0; visibility: hidden;" id="3story_{{ block.id }}_{{ section.id }}">
+    <div class="story__video-wrapper">
+      <span class="popup-video__closer">{%- render 'icon-close' -%}</span>
+      <div class="story__video-container" style="padding-bottom: {{ block.settings.type__video }};">
+        {%- assign player_id = '3player_' | append: block.id | append: '_' | append: section.id -%}
+        {{
+          block.settings.video3
+          | video_tag:
+            id: player_id,
+            class: 'js-custom',
+            image_size: '1100x',
+            autoplay: false,
+            controls: true,
+            muted: false
+        }}
+      </div>
+    </div>
+  </div>
+{%- endif -%}
+
+{%- if block.settings.video4 != blank -%}
+  <div class="story__popup" style="opacity: 0; visibility: hidden;" id="4story_{{ block.id }}_{{ section.id }}">
+    <div class="story__video-wrapper">
+      <span class="popup-video__closer">{%- render 'icon-close' -%}</span>
+      <div class="story__video-container" style="padding-bottom: {{ block.settings.type__video }};">
+        {%- assign player_id = '4player_' | append: block.id | append: '_' | append: section.id -%}
+        {{
+          block.settings.video4
+          | video_tag:
+            id: player_id,
+            class: 'js-custom',
+            image_size: '1100x',
+            autoplay: false,
+            controls: true,
+            muted: false
+        }}
+      </div>
+    </div>
+  </div>
+{%- endif -%}

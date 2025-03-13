@@ -1,0 +1,52 @@
+{{ 'timer.css' | asset_url | stylesheet_tag }}
+
+{%- unless timer_style -%}
+  {%- assign timer_style = 'minimalist' -%}
+{%- endunless -%}
+
+<timer-element
+  class="timer timer__{{ timer_style }}"
+  {% if show_animations %}
+    {% render 'animation',
+      enable_animations: section.settings.enable_animations,
+      animation: section.settings.animation
+    -%}
+  {%- endif -%}
+>
+  <div class="timer__numbers">
+    {%- if settings.timer_days > 0 -%}
+      <p class="timer__number timer__days">
+        <span class="timer__change">{{ settings.timer_days }}</span>
+        {%- if timer_style == "full" -%}
+          <span class="timer__meta">{{ 'general.timer.days' | t }}</span>
+        {%- endif -%}
+      </p>
+    {%- endif -%}
+    {%- if settings.timer_hours > 0 -%}
+      <p class="timer__number timer__hours">
+        <span class="timer__change">{{ settings.timer_hours }}</span>
+        {%- if timer_style == "full" -%}
+          <span class="timer__meta">{{ 'general.timer.hours' | t }}</span>
+        {%- endif -%}
+      </p>
+    {%- endif -%}
+    <p class="timer__number timer__minutes">
+      <span class="timer__change">{{ settings.timer_minutes }}</span>
+      {%- if timer_style == "full" -%}
+        <span class="timer__meta">{{ 'general.timer.minutes' | t }}</span>
+      {%- endif -%}
+    </p>
+    <p class="timer__number timer__seconds">
+      <span class="timer__change">{{ settings.timer_seconds }}</span>
+      {%- if timer_style == "full" -%}
+        <span class="timer__meta">{{ 'general.timer.seconds' | t }}</span>
+      {%- endif -%}
+    </p>
+  </div>
+
+  {%- if timer_text != blank -%}
+    <p class="timer__text">{{ timer_text }}</p>
+  {%- endif -%}
+</timer-element>
+
+<script src="{{ 'timer.js' | asset_url }}" defer="defer"></script>

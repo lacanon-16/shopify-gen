@@ -1,0 +1,164 @@
+{% comment %}
+  Renders product variant options
+
+  Accepts:
+  - product: {Object} product object.
+  - option: {Object} current product_option object.
+  - block: {Object} block object.
+
+
+  Usage:
+  {% render 'product-variant-options',
+    product: product,
+    option: option,
+    block: block
+  %}
+{% endcomment %}
+{%- liquid
+  assign variants_available_arr = product.variants | map: 'available'
+  assign variants_option1_arr = product.variants | map: 'option1'
+  assign variants_option2_arr = product.variants | map: 'option2'
+  assign variants_option3_arr = product.variants | map: 'option3'
+
+  assign product_form_id = 'product-form-' | append: section.id
+-%}
+
+{%- for value in option.values -%}
+  {%- liquid
+    assign option_disabled = true
+
+    for option1_name in variants_option1_arr
+      case option.position
+        when 1
+          if variants_option1_arr[forloop.index0] == value and variants_available_arr[forloop.index0]
+            assign option_disabled = false
+          endif
+        when 2
+          if option1_name == product.selected_or_first_available_variant.option1 and variants_option2_arr[forloop.index0] == value and variants_available_arr[forloop.index0]
+            assign option_disabled = false
+          endif
+        when 3
+          if option1_name == product.selected_or_first_available_variant.option1 and variants_option2_arr[forloop.index0] == product.selected_or_first_available_variant.option2 and variants_option3_arr[forloop.index0] == value and variants_available_arr[forloop.index0]
+            assign option_disabled = false
+          endif
+      endcase
+    endfor
+
+     
+    assign match_value = false
+    assign border_radius = false
+    assign match_value_image = false
+     
+    for block in section.blocks
+      if block.type == 'variant_bundle' and block.settings.trigger == value
+        assign match_value = true
+        assign match_value_border = block.settings.border
+        assign match_value_shadow = block.settings.shadow
+      endif
+  
+      if block.type == 'variant_image' and block.settings.trigger == value
+        assign match_value_image = true
+        if block.settings.border_radius
+          assign border_radius = true
+        endif
+      endif
+    endfor
+  -%}
+
+  {%- if block.settings.picker_type == 'button' or block.settings.picker_type == 'radio' -%}
+    {%- assign twin_value = value | downcase | replace: ' ', '-' -%}
+    <input
+      type="radio"
+      id="{{ section.id }}-{{ option.position }}-{{ forloop.index0 }}"
+      name="{{ option.name }}"
+      value="{{ value | escape }}"
+      form="{{ product_form_id }}"
+      {% if option.selected_value == value %}
+        checked
+      {% endif %}
+      class="{% if option_disabled %}disabled {% endif %}product__input-button"
+    >
+    <label
+      for="{{ section.id }}-{{ option.position }}-{{ forloop.index0 }}"
+      class="
+        {%- if option_disabled -%}product__label-button-disabled {% endif -%}
+        product__label-button {% if block.settings.bg_secondary %} product__option-bg{% endif %}
+        {%- if block.settings.picker_type == 'button'
+          and swatches_names contains twin_value
+          and settings.color_field == option.name
+          and match_value_image == false
+        %} swatch--valid swatch--{{ twin_value }} {% endif -%}
+        {%- if match_value %} product__label-bundle {{ match_value_border }} {{ match_value_shadow }} {% endif -%}
+        {%- if match_value_image %} product__label-image{% if border_radius %} product__label-image--radius{% endif %} {% endif -%}
+      "
+      {%- if option_disabled -%} disabled {% endif -%}
+    >
+
+      <span class="value">{{ value -}}</span>
+      <span class="visually-hidden">{{ 'products.product.variant_sold_out_or_unavailable' | t }}</span>
+      {%- if block.settings.picker_type == 'button'
+        and swatches_names contains twin_value
+        and settings.color_field == option.name
+      -%}
+        <span class="swatch--popup">{%- if option_disabled -%}{{ value }} - {{ 'products.product.sold_out' | t }}{% else -%}{{- value -}}{% endif -%}</span>
+      {%- endif -%}
+
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'variant_bundle' and block.settings.trigger == value -%}
+          <div class="variant__bundle">
+            <span class="variant__bundle--check"></span>
+            <div class="variant__bundle--meta">
+              {%- if block.settings.announcment -%}
+                <p class="variant__bundle--announcment">{{ block.settings.announcment }}</p>
+              {%- endif -%}
+              {%- if block.settings.subtitle -%}
+                <p class="variant__bundle--subtitle">{{ block.settings.subtitle }}</p>
+              {%- endif -%}
+              {%- if block.settings.title -%}
+                <p class="variant__bundle--title">{{ block.settings.title }}</p>
+              {%- endif -%}
+              {%- if block.settings.price -%}
+                <p class="variant__bundle--price">{{ block.settings.price }}</p>
+              {%- endif -%}
+            </div>
+          </div>
+        {%- elsif block.type == 'variant_image' and block.settings.trigger == value -%}
+          {% style %}
+            .product__label-image {
+              padding: {{ block.settings.padding_variant }}px !important;
+            }
+          
+            .product__label-image .variant_image > img {
+              width: {{ block.settings.size_image }}px;
+              height: {{ block.settings.size_image }}px;
+              border-radius: 
+                {%- if block.settings.border_radius -%}
+                  50%;
+                {%- else -%}
+                  calc(var(--content-container-radius) {% if block.settings.padding_variant < 3 %}- 2px{% endif %} - {{ block.settings.padding_variant }}px);
+                {%- endif -%}
+            }
+          {% endstyle %}
+          
+          <div class="variant_image">
+            {{ block.settings.image | image_url: width: 160 | image_tag: loading: 'lazy' }}
+            <span class="swatch--popup">{{- value -}}</span>
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </label>
+  {%- elsif block.settings.picker_type == 'dropdown' -%}
+    <option
+      value="{{ value | escape }}"
+      {% if option.selected_value == value %}
+        selected="selected"
+      {% endif %}
+    >
+      {% if option_disabled -%}
+        {{- 'products.product.value_unavailable' | t: option_value: value -}}
+      {%- else -%}
+        {{- value -}}
+      {%- endif %}
+    </option>
+  {%- endif -%}
+{%- endfor -%}

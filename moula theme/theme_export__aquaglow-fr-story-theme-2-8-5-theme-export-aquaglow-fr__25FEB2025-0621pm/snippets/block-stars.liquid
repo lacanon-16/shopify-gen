@@ -1,0 +1,51 @@
+{%- if style != 'none' -%}
+  {% style %}
+    :root,
+    .stars {
+      --stars-color: {%- if settings.stars_color == 'yellow' -%}239, 202, 0
+        {%- elsif settings.stars_color == 'green' -%}0, 182, 122
+        {%- elsif settings.stars_color == 'custom' -%}{{ settings.stars_color_custom.red }}, {{ settings.stars_color_custom.green }}, {{ settings.stars_color_custom.blue }}
+        {%- elsif settings.stars_color == 'accent' -%}var(--color-accent-1)
+        {%- elsif settings.stars_color == 'text' -%}var(--color-foreground){%- endif -%};
+      --stars-text-color: {%- if settings.stars_text_color == 'stars' -%}var(--stars-color){%- else -%}var(--color-foreground){%- endif -%};
+    }
+
+    {% assign ratingFinal = rating | default: 5 | divided_by: 5.0 | times: 100 %}
+    .stars--{{ unique }} .stars__meter--full {
+      clip-path: inset(0 {{ 100 | minus: ratingFinal }}% 0 0);
+    }
+  {% endstyle %}
+
+  <div class="stars stars__color--{{ settings.stars_color }} stars__style--{{ style | default: 'stars' }} stars--{{ unique }}">
+    {%- capture meter -%}
+      <div class="stars__meter">
+        <div class="stars__meter--empty">
+          {% for i in (1..5) -%}
+            {% render 'icon-star-empty', width: settings.stars_size %}
+          {%- endfor %}
+        </div>
+        <div class="stars__meter--full">
+          {% for i in (1..5) -%}
+            {% render 'icon-star', width: settings.stars_size %}
+          {%- endfor %}
+        </div>
+      </div>
+    {%- endcapture -%}
+
+    {%- if style == 'mini' -%}
+      <p class="stars__mini">
+        <span class="stars__text stars__text--note">{{ rating | default: 5 }}</span
+        ><span class="stars__text--stars_color">★</span>
+      </p>
+
+    {%- elsif style == 'full' -%}
+      <div class="stars__full">
+        <p class="stars__text stars__text--note">{{ rating | default: 5 }}/5</p>
+        {{ meter }}
+      </div>
+
+    {%- else -%}
+      {{ meter }}
+    {%- endif -%}
+  </div>
+{%- endif -%}

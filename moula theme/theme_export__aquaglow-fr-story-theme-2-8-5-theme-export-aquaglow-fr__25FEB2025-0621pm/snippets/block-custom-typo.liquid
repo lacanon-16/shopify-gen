@@ -1,0 +1,37 @@
+{% style %}
+  .section-{{ section.id }}-padding .heading strong {
+    {%- if block.settings.title_bold_color == "shade" -%}
+      background-color: rgb(var(--color-accent-1));
+      background-image: var(--gradient-background-text);
+      background-size: 100%;
+      background-repeat: repeat;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent; 
+      -moz-background-clip: text;
+      -moz-text-fill-color: transparent;
+    {%- else -%}
+      color: rgb(var(--color-{{ block.settings.title_bold_color }}));
+    {%- endif -%}
+    {%- if block.settings.title_bold_transformation == "normal" -%}
+      font-weight: var(--font-heading-weight);
+    {%- endif -%}
+  }
+
+  .section-{{ section.id }}-padding .rte strong {
+    {%- if block.settings.text_bold_color == "shade" -%}
+      background-color: rgb(var(--color-accent-1));
+      background-image: var(--gradient-background-text);
+      background-size: 100%;
+      background-repeat: repeat;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent; 
+      -moz-background-clip: text;
+      -moz-text-fill-color: transparent;
+    {%- else -%}
+      color: rgb(var(--color-{{ block.settings.text_bold_color }}));
+    {%- endif -%}
+    {%- if block.settings.text_bold_transformation == "normal" -%}
+      font-weight: var(--font-body-weight);
+    {%- endif -%}
+  }
+{% endstyle %}

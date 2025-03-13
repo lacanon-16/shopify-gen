@@ -1,0 +1,85 @@
+.breadcrumbs {
+  width: 100%;
+}
+
+@media screen and (max-width: 749px) {
+  .breadcrumbs {
+    padding: 0;
+  }
+
+  .breadcrumbs__item:first-child {
+    padding-left: 1.5rem;
+  }
+  
+  .breadcrumbs__list li.breadcrumbs__item:last-child {
+    padding-right: 1.5rem;
+  }
+}
+
+.breadcrumbs__list {
+  display: inline-flex;
+  justify-content: start;
+  align-content: center;
+  width: 100%;
+  list-style-type: none;
+}
+
+.breadcrumbs__list {
+  scrollbar-width: none;
+}
+
+.breadcrumbs__list::-webkit-scrollbar {
+  display: none;
+}
+
+.breadcrumbs i {
+  opacity: 0.2;
+  display: inline-block;
+  margin: 0 8px;
+}
+
+.breadcrumbs__link {
+  text-decoration: underline;
+}
+
+.breadcrumbs__link[aria-current="page"] {
+  color: inherit;
+  font-weight: normal;
+  text-decoration: none !important;
+}
+
+.breadcrumbs__link[aria-current="page"]:hover,
+.breadcrumbs__link[aria-current="page"]:focus {
+  text-decoration: underline !important;
+}
+
+.breadcrumbs__list li {
+  margin: 0;
+  padding: 0;
+  min-width: fit-content;
+  padding-right: .5rem;
+}
+
+.breadcrumbs__list a {
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.breadcrumbs__list a:hover {
+  text-decoration: underline !important;
+}
+
+@media screen and (min-width: 750px) {
+  .breadcrumb-width {
+    padding: 0 5rem;
+  }
+}
+
+@media only screen and (max-width: 749px) {
+  .breadcrumbs__list {
+    overflow-x: scroll;
+  }
+  .breadcrumb-width {
+    padding: 0px 15px;
+  }
+}

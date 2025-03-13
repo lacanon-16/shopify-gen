@@ -1,0 +1,76 @@
+.wishlist .heading__section {
+  margin-bottom: 3rem;
+}
+
+.wishlist .wishlist__empty {
+  justify-content: center;
+}
+
+.wishlist__empty .loader,
+.wishlist__empty--text {
+  display: none;
+}
+
+.wishlist__empty .wishlist__empty--text {
+  display: block!important;
+}
+
+.header__icon svg.icon-wishlist {
+  fill: transparent;
+  stroke: currentColor;
+}
+
+.header__icon svg.icon-wishlist path {
+  stroke: inherit;
+  stroke-width: 1.5rem;
+}
+
+.card__content-header_with-wishlist {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.card__content-header_with-wishlist .card__product-informations {
+  flex-direction: column;
+  align-items: start;
+}
+
+.button--style__wishlist {
+  cursor: pointer;
+  background: transparent;
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  appearance: none;
+  outline: none;
+  border: none;
+}
+
+.button--style__wishlist .icon-wishlist {
+  transition: 0.25s ease all;
+  width: 2rem;
+  height: 2rem;
+}
+
+.button--style__wishlist .icon-wishlist path {
+  stroke: rgb(var(--color-foreground-secondary));
+  stroke-width: 1.5rem;
+  fill: transparent;
+  fill-rule: evenodd;
+  transition: 0.25s ease all;
+}
+
+.button--style__wishlist.active .icon-wishlist path {
+  fill: rgb(var(--color-wishlist));
+  stroke: rgb(var(--color-wishlist));
+}
+
+.product-form__button--atc--with-wishlist {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}

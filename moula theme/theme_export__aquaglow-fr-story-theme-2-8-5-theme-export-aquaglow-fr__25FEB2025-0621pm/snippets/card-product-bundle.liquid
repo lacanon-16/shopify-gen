@@ -1,0 +1,74 @@
+{%- assign title = product.title | downcase -%}
+<div 
+  class="bundle__product grid__item checked bundle__product--{{ product.id }}"
+  id="{{ product.first_available_variant.id }}" 
+  data-price="{{ product.first_available_variant.price }}"
+  data-compare-at-price="{{ product.first_available_variant.compare_at_price }}"
+  {%- render 'animation', enable_animations: section.settings.enable_animations, animation: section.settings.animation -%}>
+  {%- if title == trigger -%}
+    <span class="bundle__product--badge">{{ section.settings.badge }}</span>
+  {%- endif -%}
+  <a href="{{ product.url }}" class="bundle__product-image--link">
+    <div
+      class="bundle__product--image global-media-settings {% if product.featured_image != blank %}media{% else %}placeholder{% endif %}"
+      {% if product.featured_image != blank %}
+        style="padding-bottom: {{ 1 | divided_by: product.featured_image.aspect_ratio | times: 100 }}%;"
+      {% endif %}
+    >
+      {%- if product.featured_image != blank -%}
+        {%- capture sizes -%}
+                      (min-width: {{ settings.page_width }}px) {{ settings.page_width | minus: 100 | divided_by: 2 }}px,
+                      (min-width: 750px) calc((100vw - 130px) / 2), calc((100vw - 50px) / 2)
+                    {%- endcapture -%}
+        {{
+          product.featured_image
+          | image_url: width: 1500
+          | image_tag:
+            loading: 'lazy',
+            class: 'bundle__product--image',
+            sizes: sizes,
+            widths: '165, 360, 535, 750, 1070, 1500'
+        }}
+      {%- else -%}
+        {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+      {%- endif -%}
+    </div>
+  </a>
+
+  <div class="bundle__meta--informations">
+    <p class="bundle__product--title">{{ product.title }}</p>
+    <div class="bundle__product--variants select{% if product.has_only_default_variant %} hidden{% endif %}">
+      <select class="select__select" name="id[]" data-product-id="{{ product.id }}">
+        {%- for variant in product.variants -%}
+          {%- if variant.available -%}
+            <option value="{{ variant.id }}" data-price="{{ variant.price }}" data-compare-at-price="{{ variant.compare_at_price }}">{{ variant.title | escape -}}</option>
+          {%- endif -%}
+        {%- endfor -%}
+      </select>
+      {% render 'icon-caret' %}
+      <input
+        type="number"
+        id="Quantity-{{ section.id }}"
+        name="quantity"
+        value="1"
+        min="1"
+        class="quantity-selector hidden"
+      >
+    </div>
+    <p class="bundle__product--price">
+      {%- if product.compare_at_price_min > product.price_min -%}
+        <span class="price--compare">
+          <del>{{- product.compare_at_price_min | money_without_trailing_zeros -}}</del>
+        </span>
+      {%- endif -%}
+      <span class="price--regular{%- if product.compare_at_price_min > product.price_min %} price--sale{%- endif -%}">
+        {{ product.price_min | money_without_trailing_zeros }}
+      </span>
+    </p>
+  </div>
+
+  <div class="bundle__meta--checked">
+    <input id="{{ product.id }}" type="checkbox" autocomplete="off" checked data-product-id="{{ product.id }}" />
+    <label for="{{ product.id }}" />
+  </div>
+</div>

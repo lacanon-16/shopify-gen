@@ -1,0 +1,70 @@
+{%- liquid
+   assign vertical_offset = section.settings.cut_bg_color_vertical
+   assign vertical_offset_mobile = section.settings.cut_bg_color_vertical_mobile
+   assign horizontal_offset = section.settings.cut_bg_color_horizontal
+   assign horizontal_offset_mobile = section.settings.cut_bg_color_horizontal_mobile
+-%}
+
+{%- style -%}
+  {%- if section.settings.image_bg_colored_mobile != blank -%}
+    .section-{{ section.id }}-padding::after { 
+      background: center / cover no-repeat url({{ section.settings.image_bg_colored_mobile | image_url }}); 
+      background-color: {{ section.settings.cut_bg_color }}; 
+      {%- unless section.settings.enable_cut_bg_color -%}
+        top: 0; right: 0; bottom: 0; left: 0;
+      {%- endunless -%}
+    }
+  {%- else -%}
+    .section-{{ section.id }}-padding::after { background-color: {{ section.settings.cut_bg_color }}; }
+  {%- endif -%}
+
+  {%- if section.settings.enable_cut_bg_color -%}
+    {%- if vertical_offset_mobile > 0 -%}
+      .section-{{ section.id }}-padding::after { bottom: 0; top: {{ vertical_offset_mobile }}%; }
+    {%- elsif vertical_offset_mobile < 0 -%}
+      .section-{{ section.id }}-padding::after { top: 0; bottom: {{ vertical_offset_mobile | abs }}%; }
+    {%- else -%}
+      .section-{{ section.id }}-padding::after { top: 0; bottom: 0; }
+    {%- endif -%}
+  
+    {%- if horizontal_offset_mobile > 0 -%}
+      .section-{{ section.id }}-padding::after { left: 0; right: {{ horizontal_offset_mobile }}%; border-top-right-radius: var(--media-container-radius); border-bottom-right-radius: var(--media-container-radius); }
+    {%- elsif horizontal_offset_mobile < 0 -%}
+      .section-{{ section.id }}-padding::after { right: 0; left: {{ horizontal_offset_mobile | abs }}%; border-top-left-radius: var(--media-container-radius); border-bottom-left-radius: var(--media-container-radius); }
+    {%- else -%}
+      .section-{{ section.id }}-padding::after { right: 0; left: 0; }
+    {%- endif -%}
+  {%- endif -%}
+  
+  @media screen and (min-width: 750px) {
+    {%- if section.settings.image_bg_colored != blank -%}
+      .section-{{ section.id }}-padding::after { 
+        background: center / cover no-repeat url({{ section.settings.image_bg_colored | image_url }}); 
+        background-color: {{ section.settings.cut_bg_color }}; 
+        {%- unless section.settings.enable_cut_bg_color -%}
+          top: 0; right: 0; bottom: 0; left: 0;
+        {%- endunless -%}
+      }
+    {%- else -%}
+      .section-{{ section.id }}-padding::after { background-color: {{ section.settings.cut_bg_color }}; }
+    {%- endif -%}
+    
+    {%- if section.settings.enable_cut_bg_color -%}
+      {%- if vertical_offset > 0 -%}
+        .section-{{ section.id }}-padding::after { bottom: 0; top: {{ vertical_offset }}%; }
+      {%- elsif vertical_offset < 0 -%}
+        .section-{{ section.id }}-padding::after { top: 0; bottom: {{ vertical_offset | abs }}%; }
+      {%- else -%}
+        .section-{{ section.id }}-padding::after { top: 0; bottom: 0; }
+      {%- endif -%}
+  
+      {%- if horizontal_offset > 0 -%}
+        .section-{{ section.id }}-padding::after { left: 0; right: {{ horizontal_offset }}%; border-top-right-radius: var(--media-container-radius); border-bottom-right-radius: var(--media-container-radius); }
+      {%- elsif horizontal_offset < 0 -%}
+        .section-{{ section.id }}-padding::after { right: 0; left: {{ horizontal_offset | abs }}%; border-top-left-radius: var(--media-container-radius); border-bottom-left-radius: var(--media-container-radius); }
+      {%- else -%}
+        .section-{{ section.id }}-padding::after { right: 0; left: 0; }
+      {%- endif -%}
+    {%- endif -%}
+  }
+{%- endstyle -%}

@@ -1,0 +1,53 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "wrapper": "section#wishlist.wishlist",
+  "sections": {
+    "main": {
+      "type": "main-wishlist",
+      "settings": {
+        "section_id": "",
+        "media_aspect_ratio": "square",
+        "show_secondary_image": true,
+        "show_rating": true,
+        "slides_on_desktop": 4,
+        "slides_on_tablet": 3,
+        "slides_on_mobile": "1",
+        "subheading": "WISHLIST",
+        "heading": "Keep an eye on your top products",
+        "heading_style": "2",
+        "description": "Here are all the products that you marked with a heart icon ♡",
+        "alignment": "center",
+        "enable_animations": true,
+        "animation": "fade-up",
+        "layout_width": "normal",
+        "padding_top": 0,
+        "padding_bottom": 64,
+        "padding_top_sm": 0,
+        "padding_bottom_sm": 32,
+        "color_palette": "",
+        "enable_cut_bg_color": false,
+        "cut_bg_color": "#F6F6F6",
+        "cut_bg_color_vertical": 0,
+        "cut_bg_color_vertical_mobile": 0,
+        "cut_bg_color_horizontal": 0,
+        "cut_bg_color_horizontal_mobile": 0,
+        "separator_top": "none",
+        "separator_top_invert": false,
+        "separator_bottom": "none",
+        "separator_bottom_invert": false,
+        "separator_animated": false
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

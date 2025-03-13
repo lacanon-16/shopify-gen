@@ -1,0 +1,57 @@
+{%- liquid
+  case heading_style
+    when "1"
+      assign heading_level = settings.heading_1_level
+    when "2"
+      assign heading_level = settings.heading_2_level
+    when "3"
+      assign heading_level = settings.heading_3_level
+  endcase
+
+  if forced_heading_level
+    assign level = forced_heading_level
+  else
+    if heading_level == "1"
+      assign level = '1'
+    elsif heading_level == "2"
+      assign level = '2'
+    elsif heading_level == "3"
+      assign level = '3'
+    endif
+  endif
+-%}
+<div class="heading__section {{ alignment }}">
+  {%- if subheading != blank -%}
+    <p class="h3 subheading"
+      {%- render "animation", enable_animations: enable_animations, animation: animation -%}>
+      {{ subheading }}
+    </p>
+  {%- endif -%}
+  {%- if heading != blank -%}
+    <h{{ level }}
+      class="heading heading__style--{{ heading_style }} {{ heading_class }}{% if icon and icon != "none" %} heading__icon{% endif %}"
+      {%- render "animation", enable_animations: enable_animations, animation: animation -%}>
+      {%- if icon and icon != "none" -%}
+        {%- if icon_custom != blank -%}
+          {{
+            icon_custom
+            | image_url: width: 40
+            | image_tag: loading: 'lazy', class: 'icon__icon icon__custom-icon'
+          }}
+        {%- else -%}
+          {%- render 'icons', icon: icon -%}
+        {%- endif -%}
+      {%- endif -%}
+      <span>{{ heading }}</span>
+      {%- if enable_slides -%}
+        {{ slides }}
+      {%- endif -%}
+    </h{{ level }}>
+  {%- endif -%}
+  {%- if description != blank -%}
+    <div class="heading__description rte"
+      {%- render "animation", enable_animations: enable_animations, animation: animation -%}>
+      {{ section.settings.description }}
+    </div>
+  {%- endif -%}
+</div>
