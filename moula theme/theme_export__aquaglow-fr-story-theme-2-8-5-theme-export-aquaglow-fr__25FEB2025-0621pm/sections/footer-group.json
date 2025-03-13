@@ -2,29 +2,113 @@
     "name": "t:sections.footer.name",
     "type": "footer",
     "sections": {
-        "footer": {
-            "type": "footer",
+        "2013bac1-7607-4fe5-b212-f1a53a39fb3e": {
+            "type": "icons",
             "blocks": {
-                "86bc1fa1-7fbc-40a4-a5f1-6db385eaf7f5": {
-                    "type": "image",
+                "48961664-1306-4cce-8ba6-874e46cbae1d": {
+                    "type": "icon",
                     "settings": {
-                        "image_width": 245,
-                        "alignment": "left",
-                        "text_footer": "<p><strong>AquaGlow<\/strong> - Créateur d’ambiance lumineuse apaisante. Découvrez notre lampe unique pour transformer votre espace en un lieu de détente et de bien-être.<\/p>"
+                        "icon": "truck",
+                        "heading": "Livraison Rapide",
+                        "description": "Recevez votre commande en toute sécurité. Nous expédions sous <strong>24 à 48h<\/strong> et vous bénéficiez d’un suivi en temps réel.",
+                        "heading_font_size": 24,
+                        "heading_font_size_mobile": 21,
+                        "button_link": "",
+                        "button_text": "Discover",
+                        "button_style": "1"
                     }
                 },
-                "4b56a407-ff69-4929-8842-bac519d7b845": {
-                    "type": "link_list",
+                "ddca38b4-c220-4bb2-a497-2a5f33872654": {
+                    "type": "icon",
                     "settings": {
-                        "heading": "AquaGlow",
-                        "menu": "main-menu"
+                        "icon": "lock",
+                        "heading": "Paiements 100% Sécurisés",
+                        "description": "Vos informations sont protégées. Nous acceptons les principales cartes de paiement.",
+                        "heading_font_size": 24,
+                        "heading_font_size_mobile": 21,
+                        "button_link": "",
+                        "button_text": "Discover",
+                        "button_style": "2"
+                    }
+                },
+                "d469962c-ea26-4a92-af77-913944bd468e": {
+                    "type": "icon",
+                    "settings": {
+                        "icon": "return",
+                        "heading": " Garantie Satisfait ou Remboursé",
+                        "description": "Si le produit ne vous convient pas, vous avez <strong>30 jours<\/strong> pour la retourner. Remboursement rapide, sans complications !",
+                        "heading_font_size": 24,
+                        "heading_font_size_mobile": 21,
+                        "button_link": "",
+                        "button_text": "Discover",
+                        "button_style": "2"
+                    }
+                },
+                "bd0bcf68-3806-4417-91bf-8c753676da13": {
+                    "type": "icon",
+                    "settings": {
+                        "icon": "check_mark",
+                        "heading": "Support Client 24\/7",
+                        "description": "Besoin d’aide ? Notre équipe est disponible <strong>7j\/7<\/strong>, par e-mail ou chat en direct, pour répondre à toutes vos questions.",
+                        "heading_font_size": 24,
+                        "heading_font_size_mobile": 21,
+                        "button_link": "",
+                        "button_text": "Discover",
+                        "button_style": "2"
                     }
                 }
             },
             "block_order": [
-                "86bc1fa1-7fbc-40a4-a5f1-6db385eaf7f5",
-                "4b56a407-ff69-4929-8842-bac519d7b845"
+                "48961664-1306-4cce-8ba6-874e46cbae1d",
+                "ddca38b4-c220-4bb2-a497-2a5f33872654",
+                "d469962c-ea26-4a92-af77-913944bd468e",
+                "bd0bcf68-3806-4417-91bf-8c753676da13"
             ],
+            "settings": {
+                "section_id": "",
+                "layout": "swiper",
+                "layout_style": "normal",
+                "icon__type": "complete",
+                "icon_width": 26,
+                "center_icons": true,
+                "slides_on_desktop": 4,
+                "slides_on_tablet": 3,
+                "slides_on_mobile": 1,
+                "preshot_swiper": true,
+                "loop": true,
+                "navigation": true,
+                "pagination": true,
+                "autoplay": true,
+                "speed": 4,
+                "subheading": "Details",
+                "heading": "",
+                "heading_style": "2",
+                "description": "Show to your customers a video presenting your brand and your products.",
+                "alignment": "left",
+                "enable_animations": true,
+                "animation": "fade-up",
+                "layout_width": "normal",
+                "padding_top": 32,
+                "padding_bottom": 32,
+                "padding_top_sm": 16,
+                "padding_bottom_sm": 16,
+                "color_palette": "background-2",
+                "enable_cut_bg_color": false,
+                "cut_bg_color": "#f6f6f6",
+                "cut_bg_color_vertical": 0,
+                "cut_bg_color_vertical_mobile": 0,
+                "cut_bg_color_horizontal": 0,
+                "cut_bg_color_horizontal_mobile": 0,
+                "separator_top": "curve-2",
+                "separator_top_invert": false,
+                "separator_bottom": "none",
+                "separator_bottom_invert": false,
+                "separator_animated": false,
+                "separator_bg_color": "rgba(0,0,0,0)"
+            }
+        },
+        "footer": {
+            "type": "footer",
             "settings": {
                 "center": false,
                 "footer_bottom": true,
@@ -55,6 +139,7 @@
         }
     },
     "order": [
+        "2013bac1-7607-4fe5-b212-f1a53a39fb3e",
         "footer"
     ]
 }
